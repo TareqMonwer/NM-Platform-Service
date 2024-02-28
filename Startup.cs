@@ -30,6 +30,7 @@ namespace PlatformService
         {
             services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("InMem"));
             services.AddScoped<IPlatformRepo, PlatformRepo>();
+            services.AddCors();
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen(c =>
@@ -51,6 +52,12 @@ namespace PlatformService
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(x => x
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .SetIsOriginAllowed(origin => true)
+              .AllowCredentials());
 
             app.UseAuthorization();
 
